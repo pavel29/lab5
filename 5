@@ -1,0 +1,132 @@
+#include <iostream>
+#include <conio.h>
+#include <string>
+using namespace std;
+
+template <class t>
+class student
+{
+protected:
+	t age;
+	string name, academy;
+public:
+	student();
+	student(t, string, string);
+	student(const student<t>&);
+	void set_academy();
+	void change_name();
+	void get_info();
+};
+
+template <class t> student<t>::student()
+{
+	name = "-";
+	age = 0;
+	academy = "-";
+}
+
+template <class t> student<t>::student(t a, string n, string acad)
+{
+	age = a;
+	name = n;
+	academy = acad;
+}
+
+template <class t> student<t>::student(const student<t>& as)
+{
+	age = as.age;
+	name = as.name;
+	academy = as.academy;
+}
+
+template <class t > void student<t>::set_academy()
+{
+	cout << "enter your academy: ";
+		cin >> academy;
+}
+
+template <class t > void student<t>::change_name()
+{
+	string nname;
+	cout << "enter new name:";
+	cin >> nname;
+	name = nname;
+}
+
+template <class t > void student<t>::get_info()
+{
+	cout << "name :" << name << endl;
+	cout << "age :" << age << endl;
+	cout << " academy :" << academy << endl;
+}
+
+template <class t>
+class success:public student<t>
+{
+protected:
+	t marks[5];
+	t n;
+public:
+	success() :student<t>() {};
+	success(student<t>& f) : student(f) {};
+	success(t a, string n, string acad) :student(a, n, acad) {};
+	void set_marks(t);
+	void get_marks();
+	int get_size();
+	int get();
+	bool operator==(const success<t>&);
+	~success();
+};
+
+template <class t > success<t>::~success()
+{
+	delete[] marks;
+}
+
+template <class t > bool success<t>::operator==(const success<t>& it)
+{
+	if (n != it.n) return false;
+	for (int i = 0; i < n; i++) {
+		if (marks[i] != it.marks[i]) return false;
+	}
+	return true;
+}
+
+template <class t > void success<t>::set_marks(t size)
+{
+	n = size;
+	cout << "enter "<<size<<" values: ";
+	for (int i(0); i < n; i++)
+		cin >> marks[i];
+}
+
+template <class t > int success<t>::get_size()
+{
+	return n;
+}
+
+template <class t > int success<t>::get()
+{
+	return marks[n];
+}
+
+template <class t > void success<t>::get_marks()
+{
+	cout << "marks: " << endl;
+	for (int i(0); i < 5; i++)
+	{
+		cout  << marks[i] << " ";
+	}
+}
+
+
+int main()
+{
+	success<double> a;
+	success<double> b;
+	a.set_marks(5);
+	b.set_marks(5);
+	cout << (a == b);
+	_getch();
+	return 0;
+}
